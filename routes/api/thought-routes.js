@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const Thought = require("../../models/Thought");
-const User = require("../../models/User");
 
 const {
     getThoughts,
@@ -16,7 +14,8 @@ router.route('/').get(getThoughts).post(addThought);
 
 router.route('/:thoughtId').get(getSingleThought).put(updateThought).delete(deleteThought);
 
-router.route('/:thoughtId/reactions/:reactionId').post(addReaction).delete(deleteReaction);
+router.route('/:thoughtId/reactions').post(addReaction);
+router.route('/:thoughtId/reactions/:reactionId').delete(deleteReaction);
 
 // router.get("/", (req, res) => {
 //   Thought.find()

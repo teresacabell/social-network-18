@@ -1,5 +1,4 @@
-const User = require('../models/user');
-const Thought = require('../models/thought');
+const { Thought, User } = require('../models');
 
 const thoughtController = {
     getThoughts(req, res) {
@@ -31,10 +30,10 @@ const thoughtController = {
         .then((dbThoughtData) => res.json(dbThoughtData))
         .catch((err) => res.json(err));
     },
-    addReaction(req, res) {
+    addReaction(req, res) { 
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $addToSet: { reactions: req.params.reactionId } },
+            { $addToSet: { reactions: req.body } },
             { runValidators: true, new: true }
           )
             .then((dbThoughtData) => res.json(dbThoughtData))
@@ -43,7 +42,7 @@ const thoughtController = {
     deleteReaction(req, res) {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $pull: { reactions: req.params.reactionId } },
+            { $pull: { reactions: { reactionId: req.params.reactionId } } },
             { runValidators: true, new: true }
           )
             .then((dbData) => res.json(dbData))
